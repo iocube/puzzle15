@@ -24,6 +24,8 @@
         }
       }
 
+      board[row-1][col-1] = null;
+
       return board;
     }
 
@@ -47,7 +49,7 @@
         swap(sequence, i, randomIndex);
       }
 
-      return sequence
+      return sequence;
     }
 
     function swap(sequence, indexA, indexB) {
@@ -59,38 +61,66 @@
     gc.board = initializeBoard(row, col);
     var cursor = {row: row-1, col: col-1};
 
-    function moveDown(cursor) {
-      if (isValidMove(cursor.row-1, cursor.col)) {
-        move({row: cursor.row, col: cursor.col}, {row: cursor.row-1, col: cursor.col})
-      }
-    }
+    gc.moveDown = function() {
+      gc.move({row: cursor.row, col: cursor.col}, {row: cursor.row-1, col: cursor.col});
+    };
 
-    function moveUp(cursor) {
-      if (isValidMove(cursor.row+1, cursor.col)) {
-        move({row: cursor.row, col: cursor.col}, {row: cursor.row+1, col: cursor.col})
-      }
-    }
+    gc.moveUp = function() {
+      gc.move({row: cursor.row, col: cursor.col}, {row: cursor.row+1, col: cursor.col});
+    };
 
-    function moveLeft(cursor) {
-      if (isValidMove(cursor.row, cursor.col-1)) {
-        move({row: cursor.row, col: cursor.col}, {row: cursor.row, col: cursor.col-1})
-      }
-    }
+    gc.moveRight = function() {
+      gc.move({row: cursor.row, col: cursor.col}, {row: cursor.row, col: cursor.col-1});
+    };
 
-    function moveRight(cursor) {
-      if (isValidMove(cursor.row, cursor.col+1)) {
-        move({row: cursor.row, col: cursor.col}, {row: cursor.row, col: cursor.col+1})
-      }
-    }
+    gc.moveLeft = function() {
+      gc.move({row: cursor.row, col: cursor.col}, {row: cursor.row, col: cursor.col+1});
+    };
 
-    function isValidMove(toRow, toCol) {
+    gc.isValidMove = function(toRow, toCol) {
       return gc.board[toRow] && gc.board[toRow][toCol] >= 0;
-    }
+    };
 
-    function move(fromWhere, toWhere) {
-      tmp = gc.board[toWhere.row][toWhere.col];
+    gc.move = function(fromWhere, toWhere) {
+      if (!gc.isValidMove(toWhere.row, toWhere.col)) {
+        return;
+      }
+
+      var tmp = gc.board[toWhere.row][toWhere.col];
       gc.board[toWhere.row][toWhere.col] = gc.board[fromWhere.row][fromWhere.col];
       gc.board[fromWhere.row][fromWhere.col] = tmp;
-    }
+      cursor.row = toWhere.row;
+      cursor.col = toWhere.col;
+
+      // check solution only when cursor is moved to the bottom right corner
+      // of the board.
+      if (cursor.row === row-1 && cursor.col === col-1) {
+        gc.isSolved = gc.checkSolution();
+      }
+    };
+
+    gc.checkSolution = function() {
+      for (var i = 0; i < row-1; i += 1) {
+        if (!isRowSolved(gc.board[i])) {
+          return false;
+        }
+      }
+
+      // last row is an exception as it contains 'null'
+      var exceptLastItem = gc.board[row-1].length-1;
+      return isRowSolved(gc.board[row-1].slice(0, exceptLastItem));
+    };
+
+    // check that numbers are greater than previous one by exactly one.
+    function isRowSolved(row) {
+      for (var i = 1; i < row.length; i += 1) {
+          if ((row[i-1]+1 !== row[i])) {
+              return false;
+          }
+      }
+
+      return true;
+     }
+
   }
 })();

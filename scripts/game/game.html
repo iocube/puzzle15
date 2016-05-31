@@ -1,3 +1,10 @@
+<control key="ArrowUp" action="gc.moveUp()"></control>
+<control key="ArrowDown" action="gc.moveDown()"></control>
+<control key="ArrowLeft" action="gc.moveLeft()"></control>
+<control key="ArrowRight" action="gc.moveRight()"></control>
+
 <span class="row" ng-repeat="row in gc.board">
-  <span class="col" ng-repeat="element in row">{{element}}<span>
+  <span class="col" ng-repeat="element in row">{{ element !== null ? element : '&nbsp;' }}<span>
 </span>
+
+<span ng-show="gc.isSolved">Congratulations!</span>

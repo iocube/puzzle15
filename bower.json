@@ -1,0 +1,25 @@
+{
+  "name": "15puzzle",
+  "description": "15 Puzzle",
+  "main": "index.js",
+  "authors": [
+    "Vladimir Zeifman"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "puzzle",
+    "game"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-router": "ui-router#^0.3.0",
+    "angular": "angularjs#1.4.10"
+  }
+}

@@ -122,5 +122,8 @@
       return true;
      }
 
+     gc.startCounter = function() {};
+     gc.stopCounter = function() {};
+     gc.getCounter = function() {};
   }
 })();

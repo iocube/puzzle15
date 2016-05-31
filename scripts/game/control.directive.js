@@ -26,6 +26,7 @@
             scope.key === controlsReversed[event.keyCode]) {
             event.preventDefault();
             scope.action();
+            scope.$apply();
           }
         };
 

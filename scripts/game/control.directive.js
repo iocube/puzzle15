@@ -11,13 +11,15 @@
         key: '@',
         action: '&'
       },
+      templateUrl: 'scripts/game/control.html',
       link: function(scope) {
         var controls = {
-          'ArrowDown': 40,
-          'ArrowUp': 38,
-          'ArrowLeft': 37,
-          'ArrowRight': 39
+          'ArrowDown': {'code': 40, 'classname': 'fa fa-arrow-circle-o-down control-arrow-down'},
+          'ArrowUp': {'code': 38, 'classname': 'fa fa-arrow-circle-o-up control-arrow-up'},
+          'ArrowLeft': {'code': 37, 'classname': 'fa fa-arrow-circle-o-left control-arrow-left'},
+          'ArrowRight': {'code': 39, 'classname': 'fa fa-arrow-circle-o-right control-arrow-right'}
         };
+        scope.classname = controls[scope.key].classname;
 
         var controlsReversed = reverse(controls);
 

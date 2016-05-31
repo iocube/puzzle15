@@ -4,7 +4,7 @@
 <control key="ArrowRight" action="gc.moveRight()"></control>
 
 <span class="row" ng-repeat="row in gc.board">
-  <span class="col" ng-repeat="element in row">{{ element !== null ? element : '&nbsp;' }}<span>
+  <span class="col" ng-repeat="element in row">{{ element !== null ? element : '&nbsp;' }}</span>
 </span>
 
 <span ng-show="gc.isSolved">Congratulations!</span>

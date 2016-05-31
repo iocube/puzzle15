@@ -1,0 +1,14 @@
+.row {
+  display: block;
+}
+
+.col {
+  display: inline-block;
+  border: 1px solid #000;
+}
+
+.col {
+  width: 25px;
+  padding: 50px;
+  text-align: center;
+}

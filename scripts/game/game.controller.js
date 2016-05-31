@@ -9,6 +9,7 @@
     var gc = this;
     gc.message = 'Welcome, players!';
 
+    gc.isGameStarted = false;
     var row = 4;
     var col = 4;
 
@@ -96,6 +97,10 @@
       // of the board.
       if (cursor.row === row-1 && cursor.col === col-1) {
         gc.isSolved = gc.checkSolution();
+
+        if (gc.isSolved) {
+          gc.endGame();
+        }
       }
     };
 
@@ -125,5 +130,19 @@
      gc.startCounter = function() {};
      gc.stopCounter = function() {};
      gc.getCounter = function() {};
+
+     gc.startGame = function() {
+       if (gc.isGameStarted) {
+         return;
+       }
+       
+       gc.startCounter();
+       gc.isGameStarted = true;
+     }
+
+     gc.endGame = function() {
+       gc.stopCounter();
+       gc.isGameStarted = false;
+     }
   }
 })();

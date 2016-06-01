@@ -3,13 +3,13 @@
 
   angular.module('puzzle15').controller('GameController', GameController);
 
-  GameController.$inject = ['storageService'];
+  GameController.$inject = ['storageService',
+                            'MAXIMUM_BOARD_SIZE',
+                            'MINIMUM_BOARD_SIZE',
+                            'TOTAL_PICTURES'];
 
-  function GameController(storageService) {
+  function GameController(storageService, MAXIMUM_BOARD_SIZE, MINIMUM_BOARD_SIZE, TOTAL_PICTURES) {
     var gc = this;
-    var MINIMUM_BOARD_SIZE = 4;
-    var MAXIMUM_BOARD_SIZE = 10;
-    var TOTAL_PICTURES = 15;
 
     gc.isGameStarted = false;
     gc.isGameEnded = false;

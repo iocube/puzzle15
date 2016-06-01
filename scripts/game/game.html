@@ -8,8 +8,9 @@
 <time-counter start="gc.startCounter" stop="gc.stopCounter" get-counter="gc.getCounter"></time-counter>
 <button class="start" ng-click="gc.startGame()" ng-disabled="gc.isGameStarted">Start</button>
 
+<!-- board -->
 <span class="row" ng-repeat="row in gc.board">
   <span class="col" ng-repeat="element in row">{{ element !== null ? element : '&nbsp;' }}</span>
 </span>
 
-<span ng-show="gc.isSolved">Congratulations!</span>
+<span ng-show="gc.isGameEnded">Congratulations!</span>

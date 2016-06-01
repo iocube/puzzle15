@@ -7,39 +7,46 @@
 
   function GameController(storageService) {
     var gc = this;
-    gc.message = 'Welcome, players!';
 
     gc.isGameStarted = false;
-    var row = 4;
-    var col = 4;
+    gc.isGameEnded = false;
+    gc.boardSize = {
+      col: 4,
+      row: 4
+    };
+    gc.board = initializeBoard();
+    gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
 
-    function initializeBoard(row, col) {
-      var numbers = generateSequenceOfNumbers(row*col-1);
+    function initializeBoard() {
+      var numbers = generateNumbers(gc.boardSize.row * gc.boardSize.col - 1);
       randomize(numbers);
 
       var board = [];
-      for (var i = 0, k = 0; i < row; i += 1) {
+      for (var i = 0, k = 0; i < gc.boardSize.row; i += 1) {
         board[i] = [];
-        for (var j = 0; j < col; j += 1, k += 1) {
+        for (var j = 0; j < gc.boardSize.col; j += 1, k += 1) {
           board[i].push(numbers[k]);
         }
       }
 
-      board[row-1][col-1] = null;
+      // mark last cell as empty
+      board[gc.boardSize.row-1][gc.boardSize.col-1] = null;
 
       return board;
     }
 
-    function generateSequenceOfNumbers(len) {
-      var sequence = [];
+    // generate array of n numbers
+    function generateNumbers(n) {
+      var numbers = [];
 
-      for (var i = 0; i < len; i += 1) {
-        sequence.push(i);
+      for (var i = 0; i < n; i += 1) {
+        numbers.push(i);
       }
 
-      return sequence;
+      return numbers;
     }
 
+    // randomize given array
     function randomize(sequence) {
       var min = 0,
         max = sequence.length - 1,
@@ -59,53 +66,52 @@
       sequence[indexB] = tmp;
     }
 
-    gc.board = initializeBoard(row, col);
-    var cursor = {row: row-1, col: col-1};
-
     gc.moveDown = function() {
-      gc.move({row: cursor.row, col: cursor.col}, {row: cursor.row-1, col: cursor.col});
+      move(gc.cursor.row-1, gc.cursor.col);
     };
 
     gc.moveUp = function() {
-      gc.move({row: cursor.row, col: cursor.col}, {row: cursor.row+1, col: cursor.col});
+      move(gc.cursor.row+1, gc.cursor.col);
     };
 
     gc.moveRight = function() {
-      gc.move({row: cursor.row, col: cursor.col}, {row: cursor.row, col: cursor.col-1});
+      move(gc.cursor.row, gc.cursor.col-1);
     };
 
     gc.moveLeft = function() {
-      gc.move({row: cursor.row, col: cursor.col}, {row: cursor.row, col: cursor.col+1});
+      move(gc.cursor.row, gc.cursor.col+1);
     };
 
-    gc.isValidMove = function(toRow, toCol) {
-      return gc.board[toRow] && gc.board[toRow][toCol] >= 0;
+    function isValidMove(row, col) {
+      return gc.board[row] && gc.board[row][col] >= 0;
     };
 
-    gc.move = function(fromWhere, toWhere) {
-      if (!gc.isValidMove(toWhere.row, toWhere.col)) {
+    function move(row, col) {
+      if (!isValidMove(row, col)) {
         return;
       }
 
-      var tmp = gc.board[toWhere.row][toWhere.col];
-      gc.board[toWhere.row][toWhere.col] = gc.board[fromWhere.row][fromWhere.col];
-      gc.board[fromWhere.row][fromWhere.col] = tmp;
-      cursor.row = toWhere.row;
-      cursor.col = toWhere.col;
+      // swap between the two cells
+      var tmp = gc.board[row][col];
+      gc.board[row][col] = gc.board[gc.cursor.row][gc.cursor.col];
+      gc.board[gc.cursor.row][gc.cursor.col] = tmp;
 
-      // check solution only when cursor is moved to the bottom right corner
-      // of the board.
-      if (cursor.row === row-1 && cursor.col === col-1) {
-        gc.isSolved = gc.checkSolution();
+      // update cursor new position
+      gc.cursor.row = row;
+      gc.cursor.col = col;
 
-        if (gc.isSolved) {
+      // if cursor is moved to the bottom-right corner, check if puzzle is solved.
+      if (gc.cursor.row === gc.boardSize.row-1 &&
+        gc.cursor.col === gc.boardSize.col-1) {
+        if (isSolved()) {
           gc.endGame();
         }
       }
     };
 
-    gc.checkSolution = function() {
-      for (var i = 0; i < row-1; i += 1) {
+    function isSolved() {
+      // iterate over all rows except the last one (special case)
+      for (var i = 0; i < gc.boardSize.row-1; i += 1) {
         if (!isRowSolved(gc.board[i])) {
           return false;
         }
@@ -116,7 +122,7 @@
       return isRowSolved(gc.board[row-1].slice(0, exceptLastItem));
     };
 
-    // check that numbers are greater than previous one by exactly one.
+    // row considered solved if each number is greater then previous number by exactly one.
     function isRowSolved(row) {
       for (var i = 1; i < row.length; i += 1) {
           if ((row[i-1]+1 !== row[i])) {
@@ -138,17 +144,20 @@
 
        gc.startCounter();
        gc.isGameStarted = true;
+       gc.isGameEnded = false;
      };
 
      gc.endGame = function() {
        gc.stopCounter();
        gc.isGameStarted = false;
+       gc.isGameEnded = true;
 
+       // after game is ended save game result
        var result = gc.getCounter();
-       saveResult(result);
+       saveGameResult(result);
      };
 
-     function saveResult(result) {
+     function saveGameResult(result) {
        var bestResults = storageService.load();
 
        if (bestResults.length === 0) {

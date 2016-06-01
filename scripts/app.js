@@ -14,6 +14,11 @@
         url: '/',
         templateUrl: 'scripts/game/game.html',
         controller: 'GameController as gc'
+      })
+      .state('leaderboard', {
+        url: '/leaderboard',
+        templateUrl: 'scripts/leaderboard/leaderboard.html',
+        controller: 'LeaderboardController as leaderboard'
       });
   }
 })();

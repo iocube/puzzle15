@@ -1,3 +1,16 @@
+html {
+  font-family: Helvetica;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+a {
+    text-transform: uppercase;
+}
+
 .row {
   display: block;
 }
@@ -6,6 +19,11 @@
   display: inline-block;
   position: relative;
   margin-left: 5px;
+}
+
+.board-container {
+    display: block;
+    text-align: center;
 }
 
 .square {
@@ -19,4 +37,27 @@
   font-size: 26px;
   color: #FFF;
   transform: translate(-50%, -50%);
+}
+
+.control-container {
+  -webkit-user-select: none;
+}
+
+.control {
+  font-size: 56px;
+}
+
+.control:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.time-counter {
+  font-size: 56px;
+}
+
+.is-disabled,
+.is-disabled:hover {
+  color: #e2e2e2;
+  cursor: not-allowed;
 }

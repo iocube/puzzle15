@@ -1,17 +1,21 @@
 <a href="leaderboard()" ui-sref="leaderboard">Leaderboard</a>
 
-<control key="ArrowUp" action="gc.moveUp()"></control>
-<control key="ArrowDown" action="gc.moveDown()"></control>
-<control key="ArrowLeft" action="gc.moveLeft()"></control>
-<control key="ArrowRight" action="gc.moveRight()"></control>
-
-<time-counter start="gc.startCounter" stop="gc.stopCounter" get-counter="gc.getCounter"></time-counter>
-<button class="start" ng-click="gc.startGame()" ng-disabled="gc.isGameStarted">Start</button>
-
 <!-- board -->
-<div class="row" ng-repeat="row in gc.board">
-  <div class="col" ng-repeat="element in row">
-    <img class="square" ng-src="{{ element !== null ? 'assets/square.jpg' : '' }}"/>
-    <span class="number">{{ element !== null ? element : '&nbsp;' }}</span>
+<div class="board-container">
+  <time-counter start="gc.startCounter" stop="gc.stopCounter" get-counter="gc.getCounter"></time-counter>
+
+  <div class="row" ng-repeat="row in gc.board">
+    <div class="col" ng-repeat="element in row">
+      <img class="square" ng-src="{{ element !== null ? 'assets/square.jpg' : '' }}"/>
+      <span class="number">{{ element !== null ? element : '&nbsp;' }}</span>
+    </div>
+  </div>
+
+  <div class="control-container">
+    <control key="ArrowUp" action="gc.moveUp()"></control>
+    <control key="ArrowDown" action="gc.moveDown()"></control>
+    <control key="ArrowLeft" action="gc.moveLeft()"></control>
+    <control key="ArrowRight" action="gc.moveRight()"></control>
+    <i class="fa fa-play-circle control" ng-click="gc.startGame()" ng-class="{'is-disabled': gc.isGameStarted}"></i>
   </div>
 </div>

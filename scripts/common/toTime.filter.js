@@ -3,6 +3,10 @@ toTime.$inject = [];
 
 function toTime() {
   return function(seconds) {
+    if (!angular.isDefined(seconds)) {
+      return '00:00';
+    }
+
     var minutes = parseInt(seconds / 60),
         secs = seconds % 60;
 

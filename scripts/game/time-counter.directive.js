@@ -23,15 +23,10 @@
 
         function startCounter() {
           seconds = 0;
-          scope.counter = '00:00';
 
           counterPromise = $interval(function() {
             seconds += 1;
-
-            var minutes = parseInt(seconds / 60),
-                secs = seconds % 60;
-
-            scope.counter = addLeadingZeros(minutes) + ':' + addLeadingZeros(secs);
+            scope.counter = seconds;
           }, 1000);
         }
 
@@ -41,13 +36,6 @@
 
         function getCounter() {
           return seconds;
-        }
-
-        function addLeadingZeros(number) {
-          if (number < 10) {
-            return '0' + String(number);
-          }
-          return number;
         }
 
         scope.$on('$destroy', function() {

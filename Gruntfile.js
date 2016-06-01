@@ -22,7 +22,7 @@ module.exports = function(grunt) {
             var modRewrite = require('connect-modrewrite');
 
             // enable Angular's HTML5 mode
-            middlewares.unshift(modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png|\\.jpg$ /index.html [L]']));
+            middlewares.unshift(modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png|\\.jpg|\\.jpeg$ /index.html [L]']));
 
             return middlewares;
           }

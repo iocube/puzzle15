@@ -13,8 +13,8 @@
 
   <div class="row" ng-repeat="row in gc.board">
     <div class="col" ng-repeat="element in row">
-      <img class="square" ng-src="{{ element !== null ? 'assets/square.jpg' : '' }}"/>
-      <span class="number">{{ element !== null ? element : '&nbsp;' }}</span>
+      <img class="square" ng-src="assets/{{element.pictureId}}.jpeg"/>
+      <span class="number">{{ element !== null ? element.number : '&nbsp;' }}</span>
     </div>
   </div>
 

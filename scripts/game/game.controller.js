@@ -9,6 +9,7 @@
     var gc = this;
     var MINIMUM_BOARD_SIZE = 4;
     var MAXIMUM_BOARD_SIZE = 10;
+    var TOTAL_PICTURES = 15;
 
     gc.isGameStarted = false;
     gc.isGameEnded = false;
@@ -16,26 +17,24 @@
       col: MINIMUM_BOARD_SIZE,
       row: MINIMUM_BOARD_SIZE
     };
-    gc.board = initializeBoard();
-    gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
+    gc.board = [];
 
+    initializeBoard();
+    gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
 
     function initializeBoard() {
       var numbers = generateNumbers(gc.boardSize.row * gc.boardSize.col - 1);
-      randomize(numbers);
 
-      var board = [];
+      gc.board = [];
       for (var i = 0, k = 0; i < gc.boardSize.row; i += 1) {
-        board[i] = [];
+        gc.board[i] = [];
         for (var j = 0; j < gc.boardSize.col; j += 1, k += 1) {
-          board[i].push(numbers[k]);
+          gc.board[i].push({'number': numbers[k], 'pictureId': numbers[k] % TOTAL_PICTURES});
         }
       }
 
       // mark last cell as empty
-      board[gc.boardSize.row-1][gc.boardSize.col-1] = null;
-
-      return board;
+      gc.board[gc.boardSize.row-1][gc.boardSize.col-1] = null;
     }
 
     // generate array of n numbers
@@ -49,24 +48,32 @@
       return numbers;
     }
 
-    // randomize given array
-    function randomize(sequence) {
+    function randomizeBoard() {
       var min = 0,
-        max = sequence.length - 1,
-        randomIndex;
+        max = gc.boardSize.row - 1,
+        randomRow,
+        randomCol,
+        tmp;
 
-      for (var i = 0; i < sequence.length; i += 1) {
-        randomIndex = Math.floor(Math.random() * (max - min + 1)) + min;
-        swap(sequence, i, randomIndex);
+      for (var i = 0; i < gc.boardSize.row; i += 1) {
+        for (var j = 0; j < gc.boardSize.col; j += 1) {
+          randomRow = random(min, max);
+          randomCol = random(min, max);
+
+          if (gc.board[randomRow][randomCol] === null ||
+            gc.board[i][j] === null) {
+            continue;
+          }
+
+          tmp = gc.board[i][j];
+          gc.board[i][j] = gc.board[randomRow][randomCol];
+          gc.board[randomRow][randomCol] = tmp;
+        }
       }
-
-      return sequence;
     }
 
-    function swap(sequence, indexA, indexB) {
-      var tmp = sequence[indexA];
-      sequence[indexA] = sequence[indexB];
-      sequence[indexB] = tmp;
+    function random(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     gc.moveDown = function() {
@@ -86,7 +93,9 @@
     };
 
     function isValidMove(row, col) {
-      return gc.board[row] && gc.board[row][col] >= 0;
+      return gc.board[row] &&
+        gc.board[row][col] &&
+        gc.board[row][col].number >= 0;
     }
 
     function move(row, col) {
@@ -121,14 +130,14 @@
       }
 
       // last row is an exception as it contains 'null'
-      var exceptLastItem = gc.board[row-1].length-1;
-      return isRowSolved(gc.board[row-1].slice(0, exceptLastItem));
+      var exceptLastItem = gc.board[gc.boardSize.row-1].length-1;
+      return isRowSolved(gc.board[gc.boardSize.row-1].slice(0, exceptLastItem));
     }
 
     // row considered solved if each number is greater then previous number by exactly one.
     function isRowSolved(row) {
       for (var i = 1; i < row.length; i += 1) {
-          if ((row[i-1]+1 !== row[i])) {
+          if ((row[i-1].number+1 !== row[i].number)) {
               return false;
           }
       }
@@ -145,6 +154,7 @@
          return;
        }
 
+       randomizeBoard();
        gc.startCounter();
        gc.isGameStarted = true;
        gc.isGameEnded = false;
@@ -192,7 +202,7 @@
           row: gc.boardSize.row + 1
         };
 
-        gc.board = initializeBoard();
+        initializeBoard();
         gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
       }
 
@@ -206,7 +216,7 @@
           row: gc.boardSize.row - 1
         };
 
-        gc.board = initializeBoard();
+        initializeBoard();
         gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
       }
   }

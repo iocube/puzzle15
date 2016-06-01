@@ -87,7 +87,7 @@
     }
 
     function move(row, col) {
-      if (!isValidMove(row, col)) {
+      if (!isValidMove(row, col) || (!gc.isGameStarted && !gc.isGameEnded)) {
         return;
       }
 

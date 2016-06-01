@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('puzzle15', ['ui.router']);
+  angular.module('puzzle15', ['ui.router', 'ngStorage']);
   angular.module('puzzle15').config(app);
 
   app.$inject = ['$locationProvider', '$stateProvider'];

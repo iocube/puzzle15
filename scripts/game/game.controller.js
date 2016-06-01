@@ -3,9 +3,9 @@
 
   angular.module('puzzle15').controller('GameController', GameController);
 
-  GameController.$inject = [];
+  GameController.$inject = ['storageService'];
 
-  function GameController() {
+  function GameController(storageService) {
     var gc = this;
     gc.message = 'Welcome, players!';
 
@@ -135,14 +135,39 @@
        if (gc.isGameStarted) {
          return;
        }
-       
+
        gc.startCounter();
        gc.isGameStarted = true;
-     }
+     };
 
      gc.endGame = function() {
        gc.stopCounter();
        gc.isGameStarted = false;
-     }
+
+       var result = gc.getCounter();
+       saveResult(result);
+     };
+
+     function saveResult(result) {
+       var bestResults = storageService.load();
+
+       if (bestResults.length === 0) {
+         bestResults.push(result);
+         storageService.save(bestResults);
+         return;
+       }
+
+       // find place to insert new result
+       for (var i = 0; i < bestResults.length; i += 1) {
+         if (result <= bestResults[i]) {
+           bestResults.splice(i, 0, result);
+           break;
+         }
+       }
+
+       // only best of ten results should be saved
+       var bestOfTen = bestResults.slice(0, 10);
+        storageService.save(bestOfTen);
+      }
   }
 })();

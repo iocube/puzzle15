@@ -84,7 +84,7 @@
 
     function isValidMove(row, col) {
       return gc.board[row] && gc.board[row][col] >= 0;
-    };
+    }
 
     function move(row, col) {
       if (!isValidMove(row, col)) {
@@ -107,7 +107,7 @@
           gc.endGame();
         }
       }
-    };
+    }
 
     function isSolved() {
       // iterate over all rows except the last one (special case)
@@ -120,7 +120,7 @@
       // last row is an exception as it contains 'null'
       var exceptLastItem = gc.board[row-1].length-1;
       return isRowSolved(gc.board[row-1].slice(0, exceptLastItem));
-    };
+    }
 
     // row considered solved if each number is greater then previous number by exactly one.
     function isRowSolved(row) {

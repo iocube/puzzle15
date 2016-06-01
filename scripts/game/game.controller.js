@@ -204,7 +204,7 @@
 
         initializeBoard();
         gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
-      }
+      };
 
       gc.decreaseBoardSize = function() {
         if (gc.isGameStarted || (gc.boardSize.row - 1 < MINIMUM_BOARD_SIZE)) {
@@ -218,6 +218,6 @@
 
         initializeBoard();
         gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
-      }
+      };
   }
 })();

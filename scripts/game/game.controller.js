@@ -7,15 +7,18 @@
 
   function GameController(storageService) {
     var gc = this;
+    var MINIMUM_BOARD_SIZE = 4;
+    var MAXIMUM_BOARD_SIZE = 10;
 
     gc.isGameStarted = false;
     gc.isGameEnded = false;
     gc.boardSize = {
-      col: 4,
-      row: 4
+      col: MINIMUM_BOARD_SIZE,
+      row: MINIMUM_BOARD_SIZE
     };
     gc.board = initializeBoard();
     gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
+
 
     function initializeBoard() {
       var numbers = generateNumbers(gc.boardSize.row * gc.boardSize.col - 1);
@@ -177,6 +180,34 @@
        // only best of ten results should be saved
        var bestOfTen = bestResults.slice(0, 10);
         storageService.save(bestOfTen);
+      }
+
+      gc.increaseBoardSize = function() {
+        if (gc.isGameStarted || (gc.boardSize.row + 1 > MAXIMUM_BOARD_SIZE)) {
+          return;
+        }
+
+        gc.boardSize = {
+          col: gc.boardSize.col + 1,
+          row: gc.boardSize.row + 1
+        };
+
+        gc.board = initializeBoard();
+        gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
+      }
+
+      gc.decreaseBoardSize = function() {
+        if (gc.isGameStarted || (gc.boardSize.row - 1 < MINIMUM_BOARD_SIZE)) {
+          return;
+        }
+
+        gc.boardSize = {
+          col: gc.boardSize.col - 1,
+          row: gc.boardSize.row - 1
+        };
+
+        gc.board = initializeBoard();
+        gc.cursor = {row: gc.boardSize.row-1, col: gc.boardSize.col-1};
       }
   }
 })();

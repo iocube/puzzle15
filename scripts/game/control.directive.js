@@ -49,7 +49,7 @@
       val;
 
     keys.forEach(function(key) {
-      val = obj[key];
+      val = obj[key].code;
       inverted[val] = key;
     });
 

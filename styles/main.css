@@ -4,11 +4,19 @@
 
 .col {
   display: inline-block;
-  border: 1px solid #000;
+  position: relative;
+  margin-left: 5px;
 }
 
-.col {
-  width: 25px;
-  padding: 50px;
-  text-align: center;
+.square {
+  width: 100px;
+}
+
+.number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 26px;
+  color: #FFF;
+  transform: translate(-50%, -50%);
 }

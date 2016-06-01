@@ -11,6 +11,10 @@ a {
     text-transform: uppercase;
 }
 
+h3 {
+  font-size: 56px;
+}
+
 .row {
   display: block;
 }
@@ -60,4 +64,12 @@ a {
 .is-disabled:hover {
   color: #e2e2e2;
   cursor: not-allowed;
+}
+
+.leaderboard-container {
+  text-align: center;
+}
+
+.leaderboard-time {
+  font-size: 56px;
 }

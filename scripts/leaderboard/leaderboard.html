@@ -1,6 +1,7 @@
-<button ui-sref="main">Play</button>
+<a href="main()" ui-sref="main">Play</a>
 
-<div>
-  Leaderboard
-  <div ng-repeat="result in leaderboard.results track by $index">{{result | toTime}}</div>
+<div class="leaderboard-container">
+  <h3>Leaderboard</h3>
+  <div ng-if="leaderboard.results.length === 0">Empty :'(</div>
+  <div class="leaderboard-time" ng-repeat="result in leaderboard.results track by $index">{{result | toTime}}</div>
 </div>

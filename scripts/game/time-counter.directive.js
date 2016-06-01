@@ -51,7 +51,7 @@
         }
 
         scope.$on('$destroy', function() {
-          stop(timeCounterPromise);
+          stop(counterPromise);
         });
       }
     };
